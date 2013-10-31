@@ -1,5 +1,4 @@
-/* jslint node: true */
-
 var commands = exports;
 
-commands.endpoint = require('./endpoint');
+commands.server = require('./server');
+commands.provider = require('./provider');

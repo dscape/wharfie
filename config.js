@@ -1,7 +1,7 @@
 /* jslint node: true */
 var path = require('path'),
-    fs = require('fs'),
-    wharfie = require('./wharfie');
+  fs = require('fs'),
+  wharfie = require('./wharfie');
 
 var _load = wharfie.config.load;
 
@@ -11,8 +11,7 @@ try {
     dir: process.env.HOME,
     search: true
   });
-}
-catch (err) {
+} catch (err) {
   console.log('Error parsing ' + wharfie.config.stores.file.file.magenta);
   console.log(err.message);
   console.log('');

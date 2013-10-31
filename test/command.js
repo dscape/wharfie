@@ -1,3 +1,1 @@
-/* jslint node: true */
-
-module.exports = __dirname + '/../bin/wharfie --wharfieconf testwharfie'
+module.exports = __dirname + '/../bin/wharfie --wharfieconf testwharfie';

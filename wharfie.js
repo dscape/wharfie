@@ -1,7 +1,6 @@
-/* jslint node: true */
-
 var path = require('path'),
   url = require('url'),
+  pkgcloud = require('pkgcloud'),
   flatiron = require('flatiron');
 
 var wharfie = module.exports = new flatiron.App({
@@ -14,51 +13,42 @@ wharfie.use(require('flatiron-cli-version'));
 
 wharfie.use(flatiron.plugins.cli, {
   usage: require('./commands/usage'),
-  source: path.join(__dirname, 'wharfie', 'commands'),
+  source: path.join(__dirname, 'wharfie', 'commands')
 });
 
 wharfie.started = false;
 wharfie.commands = require('./commands');
-wharfie.prompt.override = wharfie.argv;
 
-/*
-wharfie.prompt.properties = wharfie.common.mixin(
-  wharfie.prompt.properties, {
-    "yesno": {
-      "name": 'yesno',
-      "message": 'are you sure?',
-      "validator": /y[es]?|n[o]?/,
-      "warning": 'Must respond yes or no',
-      "default": 'no'
-    },
-    "endpoint": {
-      "name": "endpoint",
-      "message": "Server",
-      "current": "196.138.107.1"
-    }
-  }
-);
-*/
+wharfie.prompt.override = wharfie.argv;
 
 require('./config');
 require('./aliases');
 
 wharfie.welcome = function () {
+  var currentServer = wharfie.config.get('server');
+  var currentProvider = wharfie.config.get('provider');
   wharfie.log.info('Welcome to ' + 'wharfie'.grey);
   wharfie.log.info('It worked if it ends with ' + 'wharfie'.grey + ' ok'.green.bold);
+  if (currentServer) {
+    wharfie.log.info('Current Server: ' + currentServer.magenta);
+  }
+  if (currentProvider) {
+    wharfie.log.info('Current Provider: ' + currentProvider.magenta);
+  }
 };
 
 wharfie.start = function (callback) {
   wharfie.init(function (err) {
+    wharfie.welcome();
+
     if (err) {
-      wharfie.welcome();
       callback(err);
       return wharfie.showError.apply(null, ["wharfie"].concat(arguments));
     }
 
-    wharfie.welcome();
-
+    /*
     var endpoint = wharfie.config.get('endpoint') || wharfie.config.get('endpoints:current');
+
     if (!endpoint) {
       return wharfie.prompt.get(["endpoint"], function (err, stdin) {
         if (err) {
@@ -93,6 +83,7 @@ wharfie.start = function (callback) {
         }
       });
     }
+    */
     return wharfie.exec(wharfie.argv._, callback);
   });
 };
@@ -102,7 +93,6 @@ wharfie.exec = function (command, callback) {
     if (err) {
       return callback(err);
     }
-
     wharfie.log.info('Executing command ' + command.join(' ').magenta);
     wharfie.router.dispatch('on', command.join(' '), wharfie.log,
       function (err, shallow) {
@@ -110,7 +100,6 @@ wharfie.exec = function (command, callback) {
           callback(err);
           return wharfie.showError(command.join(' '), err, shallow);
         }
-
         callback.apply(null, arguments);
       });
   }
@@ -123,10 +112,9 @@ wharfie.setup = function (callback) {
     return callback();
   }
 
-  var endpoint = wharfie.config.get('endpoint');
+  wharfie.PkgCloud = require('pkgcloud');
 
   wharfie.started = true;
-
   callback();
 };
 

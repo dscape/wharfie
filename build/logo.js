@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-/* jslint node: true */
-
 var PictureTube = require('picture-tube'),
-    tube = new PictureTube({ cols: 26 }),
-    fs = require('fs');
+  tube = new PictureTube({
+    cols: 26
+  }),
+  fs = require('fs');
 
 var docker;
 
@@ -27,7 +27,7 @@ tube.on('end', function () {
 
 function chop(str, n) {
   var stack = [],
-      l;
+    l;
 
   while (str.length) {
     l = Math.min(str.length, n);
@@ -41,11 +41,11 @@ function chop(str, n) {
 function sew(a, b) {
 
   var min = Math.min(a.length, b.length),
-      max = Math.max(a.length, b.length),
-      favorA = a.length > b.length,
-      fillWidth = favorA ? b[0].length : a[0].length,
-      buff = [],
-      i;
+    max = Math.max(a.length, b.length),
+    favorA = a.length > b.length,
+    fillWidth = favorA ? b[0].length : a[0].length,
+    buff = [],
+    i;
 
   for (i = 0; i < min; i++) {
     buff.push(a[i] + b[i]);
@@ -55,8 +55,7 @@ function sew(a, b) {
     for (i = min; i < max; i++) {
       buff.push(a[i] + Array(fillWidth + 1).join(' '));
     }
-  }
-  else {
+  } else {
     for (i = min; i < max; i++) {
       buff.push(Array(fillWidth + 1).join(' ') + b[i]);
     }

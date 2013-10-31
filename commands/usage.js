@@ -6,8 +6,8 @@ module.exports = [
   ''
 ].concat(
   require('../assets/docker-logo.json')
-    .join('')
-    .split('\n')
+  .join('')
+  .split('\n')
 ).concat([
   '',
   'Docker for all your servers',

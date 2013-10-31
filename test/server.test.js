@@ -4,13 +4,13 @@ var nixt = require('nixt');
 
 var wharfie = require('./command');
 
-describe('wharfie#usage', function () {
-  it('makes sure usage works', function (done) {
+describe('wharfie#server', function () {
+  it('should give usage information if badly invoked', function (done) {
     nixt({
       colors: false
     })
-      .run(wharfie)
-      .stdout(/Docker for all your servers/)
+      .run(wharfie + ' server')
+      .stdout(/wharfie server */)
       .end(done);
   });
 });
